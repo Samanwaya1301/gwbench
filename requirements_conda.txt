@@ -1,0 +1,10 @@
+astropy
+dill
+numdifftools
+numpy
+pandas
+python-lal
+python-lalsimulation
+scipy
+sympy
+tqdm

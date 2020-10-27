@@ -1,0 +1,9 @@
+__pycache__
+*pyc
+*swp
+*out
+*npy
+build/
+dist/
+gwbench.egg-info/
+.ipynb_checkpoints
