@@ -6,7 +6,18 @@ We request that any academic report, publication, or other academic
 disclosure of results derived from the use of this software acknowledge
 the use of the software by an appropriate acknowledgment or citation.
 
-The gwbench software can be cited with the [arXiv:2010.15202](https://arxiv.org/abs/2010.15202).
+The gwbench software can be cited from [arXiv:2010.15202](https://arxiv.org/abs/2010.15202), with INSPIRE BibTeX entry:
+```
+@article{Borhanian:2020ypi,
+    author = "Borhanian, Ssohrab",
+    title = "{gwbench: a novel Fisher information package for gravitational-wave benchmarking}",
+    eprint = "2010.15202",
+    archivePrefix = "arXiv",
+    primaryClass = "gr-qc",
+    month = "10",
+    year = "2020"
+}
+```
 
 ## Installation
 
