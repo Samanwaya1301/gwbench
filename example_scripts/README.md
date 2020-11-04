@@ -1,4 +1,7 @@
-**Examples:**
+## Examples:
+
+**Beware that the number, passed to `num_gw_benchmarking.py`, `sym_gw_benchmarking.py`, and `multi_network.py`, needs to be smaller than `num_injs` as specified in each script.**
+
 - Basic script to calculate antenna patterns, location phase factors, and PSDs:  
 `python compute_ant_pat_lpf_psd.py`  
 
@@ -16,6 +19,7 @@
 
 - Multi network GW benchmarking, setup with symbolic derivatives (can be switched to numeric):  
 `python multi_network.py 0`  
+
 
 **Available detector locations:**  
 - standard sites:  
