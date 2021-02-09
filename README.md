@@ -36,6 +36,12 @@ which conda
 
 The last line should print `/cvmfs/oasis.opensciencegrid.org/ligo/sw/conda/condabin/conda` or similar.
 
+#### Clone the `gwbench` repository and enter it
+```
+git clone https://gitlab.com/sborhanian/gwbench.git
+cd gwbench
+```
+
 #### Setup conda virtual environment
 ```
 conda create -y --name gwbench python=3.7  
