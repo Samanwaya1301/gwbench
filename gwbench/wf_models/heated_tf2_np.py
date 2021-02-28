@@ -83,6 +83,14 @@ def hfpc(f, Mc, eta, chi1z, chi2z, DL, tc, phic, iota):
          + (14585./8. - 7270.*eta + 80.*eta**2)*chi_a**2)*chi_s + (14585./24. - (475.*eta)/6. + (100.*eta**2)/3.)*chi_s**3 + delta*((-25150083775./3048192.
          + (26804935.*eta)/6048. - (1985.*eta**2)/48.)*chi_a + (14585./24. - 2380.*eta)*chi_a**3 + (14585./8. - (215.*eta)/2.)*chi_a*chi_s**2)))
 
+    #phase due to tidal heating
+    #----------------------------------------------------
+    psi_so_1 = (1/6.)*((-56*eta - 73*np.sqrt(1 - 4*eta) + 73)*()
+    con = (3./128.*eta)/v**5
+    term1 = -(10/9.)*(v**5)*Heff5*(3*np.log(v) + 1)
+    term2 = -(5/168.)*(v**7)*Heff5*(952*eta + 995)
+    term3 = (5/9.)*(v**8)*(3*np.log(v) - 1)*(-4*Heff8 + Heff5*psi_so)
+    
     phase = 2*f*PI*tc - phic - PI/4. + (3./(128.*v**5*eta))*(p0 + v*p1 + v**2*p2 + v**3*p3+ v**4*p4 + v**5*(p5+p5L) + v**6*(p6+p6L) + v**7*p7)
 
     hp = 0.5*(1+(cos(iota))**2)*A*f**(-7./6.)*(cos(phase) - 1j*sin(phase))
