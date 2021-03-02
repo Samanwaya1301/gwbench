@@ -27,6 +27,8 @@ from gwbench.wf_models import tf2_tidal_np
 from gwbench.wf_models import tf2_tidal_sp
 from gwbench.wf_models import heated_tf2_np
 from gwbench.wf_models import heated_tf2_sp
+
+
 class Waveform(object):
 
     ###
