@@ -33,7 +33,7 @@ f, Mc, eta, chi1z, chi2z, DL, tc, phic, iota = sp.symbols(wf_symbs_string, real=
 # defining constants
 GammaE = 0.577215664901532
 
-def hfpc(f, Mc, eta, chi1z, chi2z, DL, tc, phic, iota):
+def hfpc(f, Mc, eta, chi1z, chi2z, DL, tc, phic, iota, Heff5, Heff8):
     '''
     Mc ... in solar mass
     DL ... in mega parsec
