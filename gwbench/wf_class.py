@@ -25,7 +25,8 @@ from gwbench.wf_models import tf2_np
 from gwbench.wf_models import tf2_sp
 from gwbench.wf_models import tf2_tidal_np
 from gwbench.wf_models import tf2_tidal_sp
-
+from gwbench.wf_models import heated_tf2_np
+from gwbench.wf_models import heated_tf2_sp
 class Waveform(object):
 
     ###
@@ -93,6 +94,9 @@ def select_wf_model_quants(wf_model_name):
     elif wf_model_name == 'tf2_tidal':
         np_mod = tf2_tidal_np
         sp_mod = tf2_tidal_sp
+    elif wf_model_name == 'heated_tf2':
+        np_mod = heated_tf2_np
+        sp_mod = heated_tf2_sp
 
     if sp_mod is None:
         return np_mod.wf_symbs_string, np_mod.hfpc, None
