@@ -89,9 +89,9 @@ def hfpc(f, Mc, eta, chi1z, chi2z, DL, tc, phic, iota, Heff5, Heff8):
     
     #phase due to tidal heating
     #----------------------------------------------------
-    psi_so_1 = (1/6.)*((-56*eta - 73*np.sqrt(1 - 4*eta) + 73)*chi1z
-    psi_so_2 = (1/6.)*((-56*eta - 73*np.sqrt(1 - 4*eta) + 73)*chi2z
-    psi_so = psi_so_1 + psi_so_2
+    psi_so1 = (1/6.)*((-56*eta - 73*np.sqrt(1 - 4*eta) + 73)*chi1z
+    psi_so2 = (1/6.)*((-56*eta - 73*np.sqrt(1 - 4*eta) + 73)*chi2z
+    psi_so = psi_so1 + psi_so2
     con = (3./128.*eta)/v**5
     term1 = -(10/9.)*(v**5)*Heff5*(3*np.log(v) + 1)
     term2 = -(5/168.)*(v**7)*Heff5*(952*eta + 995)
