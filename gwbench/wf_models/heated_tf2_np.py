@@ -25,7 +25,7 @@ sin = np.sin
 log = np.log
 PI = np.pi
 
-wf_symbs_string = 'f Mc eta chi1z chi2z DL tc phic iota'
+wf_symbs_string = 'f Mc eta chi1z chi2z DL tc phic iota Heff5 Heff8'
 
 #------from Anruadha--------
 # defining constants

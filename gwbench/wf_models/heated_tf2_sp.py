@@ -26,8 +26,8 @@ sin = sp.sin
 log = sp.log
 PI = np.pi
 
-wf_symbs_string = 'f Mc eta chi1z chi2z DL tc phic iota'
-f, Mc, eta, chi1z, chi2z, DL, tc, phic, iota = sp.symbols(wf_symbs_string, real=True)
+wf_symbs_string = 'f Mc eta chi1z chi2z DL tc phic iota Heff5 Heff8'
+f, Mc, eta, chi1z, chi2z, DL, tc, phic, iota, Heff5, Heff8 = sp.symbols(wf_symbs_string, real=True)
 
 #------from Anruadha--------
 # defining constants
