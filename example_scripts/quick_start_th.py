@@ -45,12 +45,12 @@ inj_params = {
     'tc':    0,
     'phic':  0,
     'iota':  np.pi/4,
+    'Heff5': 0,
+    'Heff8': 0,
     'ra':    np.pi/4,
     'dec':   np.pi/4,
     'psi':   np.pi/4,
-    'gmst0': 0,
-    'Heff5': 0,
-    'Heff8': 0
+    'gmst0': 0
     }
 
 # assign with respect to which parameters to take derivatives
