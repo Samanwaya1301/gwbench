@@ -94,7 +94,7 @@ def Heff5(h1, h2, m1, m2, chi1, chi2):
     return h1 * (m1/m)**3 * (3 * chi1**2 + 1) * chi1 + h2 * (m2/m)**3 * (3 * chi2**2 + 1) * chi2 
 def Heff8(h1, h2, m1, m2, chi1, chi2):
     m = m1 + m2
-    return 4 * np.pi * Heff5(h1, h2, m1, m2, chi, chi2) + h1 * (m1/m)**4 * (1 + np.sqrt(1 - chi1**2)) * (1 + 3 * chi1**2) + h2 * (m2/m)**4 * (1 + np.sqrt(1 - chi2**2)) * (1 + 3 * chi2**2)
+    return 4 * np.pi * Heff5(h1, h2, m1, m2, chi1, chi2) + h1 * (m1/m)**4 * (1 + np.sqrt(1 - chi1**2)) * (1 + 3 * chi1**2) + h2 * (m2/m)**4 * (1 + np.sqrt(1 - chi2**2)) * (1 + 3 * chi2**2)
     
 
 #-----derivatives of spin and mass functions-----
