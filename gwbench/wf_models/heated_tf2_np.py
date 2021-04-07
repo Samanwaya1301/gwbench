@@ -25,13 +25,13 @@ sin = np.sin
 log = np.log
 PI = np.pi
 
-wf_symbs_string = 'f Mc eta chi1z chi2z DL tc phic iota Heff5 Heff8'
+wf_symbs_string = 'f Mc eta chi1z chi2z DL tc phic iota Heff5 Heff8 e0'
 
 #------from Anruadha--------
 # defining constants
 GammaE = 0.577215664901532
 
-def hfpc(f, Mc, eta, chi1z, chi2z, DL, tc, phic, iota, Heff5, Heff8):
+def hfpc(f, Mc, eta, chi1z, chi2z, DL, tc, phic, iota, Heff5, Heff8, e0):
     '''
     Mc ... in solar mass
     DL ... in mega parsec
