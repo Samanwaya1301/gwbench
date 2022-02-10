@@ -26,7 +26,9 @@ import scipy.linalg as la
 ############################################################################
 
 # choose the desired detectors
-network_spec = ['CE2-40-CBO_C', 'CE2-40-CBO_N', 'CE2-40-CBO_S']
+network_spec = ['aLIGO_H', 'aLIGO_L', 'aLIGO_V']
+#network_spec = ['ET_ET1', 'ET_ET2', 'ET_ET3']
+#network_spec = ['CE2-40-CBO_C', 'CE2-40-CBO_N', 'CE2-40-CBO_S']
 # initialize the network with the desired detectors
 net = network.Network(network_spec)
 
