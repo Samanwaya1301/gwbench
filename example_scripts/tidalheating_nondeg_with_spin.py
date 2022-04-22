@@ -1,0 +1,229 @@
+#copyright (C) 2020  Ssohrab Borhanian
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+import numpy as np
+import gwbench.basic_relations as brs
+from gwbench import network
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+############################################################################
+### User Choices
+############################################################################
+
+# choose the desired detectors
+#network_spec = ['aLIGO_H', 'aLIGO_L', 'aLIGO_V']
+#network_spec = ['ET_ET1', 'ET_ET2', 'ET_ET3']
+#network_spec = ['CE2-40-CBO_C', 'CE2-40-CBO_N', 'CE2-40-CBO_S']
+# initialize the network with the desired detectors
+
+# pick the desired frequency range
+#f = np.arange(5.,67.6,2**-4)
+
+#define arrays for errors
+err_Log_Mc = []
+
+#input m1, m2 instead of Mc eta and then convert
+M = [10.,30.,60.]
+q = 1.
+
+#Mc,eta = brs.Mc_eta_of_m1_m2(m1,m2)
+#loop for plotting
+figure, axs = plt.subplots(1,2)
+	
+for i in range(0,2):     #  detector loop
+
+	if i==0: network_spec = ['ET_ET1', 'ET_ET2', 'ET_ET3']
+	else: network_spec = ['CE2-40-CBO_C', 'CE2-40-CBO_N', 'CE2-40-CBO_S']
+
+	net = network.Network(network_spec)
+
+    # choose the desired waveform 
+	wf_model_name = 'heated_tf2_nondeg'
+	# pass the chosen waveform to the network for initialization
+	net.set_wf_vars(wf_model_name=wf_model_name)
+
+	for l in range(len(M)):     #  M loop
+		
+
+		j = 1
+
+		err_H_eff5 = []
+		err_H_eff8 = []
+		chi_val =[0.1,0.3,0.5,0.7,0.9]
+
+		for j in range(len(chi_val)):     #  chi loop
+
+			
+			# set the injection parameters
+			m1 = (q/(q+1))*M[l]
+			m2 = (1/(q+1))*M[l]
+			Mc,eta = brs.Mc_eta_of_m1_m2(m1,m2)
+			inj_params = {
+			    'Mc':    Mc,
+			    'eta':   eta,
+			    'chi1z': chi_val[j],
+			    'chi2z': chi_val[j],
+			    'DL':    200,
+			    'tc':    0,
+			    'phic':  0,
+			    'iota':  np.pi/4,
+			    'ra':    np.pi/4,
+			    'dec':   np.pi/4,
+			    'psi':   np.pi/4,
+			    'gmst0': 0,
+			    'Heff5': 0.6,
+			    'Heff8': 12.
+			    }
+			#calculating isco frequency
+
+			#Mc = inj_params["Mc"]
+			#eta = inj_params["eta"]
+
+			#M = brs.M_of_Mc_eta(Mc,eta)
+			f_isco = brs.f_isco_Msolar(M[l])
+
+
+			#check the desired frequency range
+			f = np.arange(4.,f_isco,2**-4)
+
+
+
+			#wf_other_var_dic = {'Heff5': 0, 'Heff8': 0}
+			# assign with respect to which parameters to take derivatives
+			deriv_symbs_string = 'Mc Heff5 Heff8'
+
+			# assign which parameters to convert to cos or log versions
+			conv_cos = ('iota','dec')
+			conv_log = ('Mc','DL')
+
+			# choose whether to take Earth's rotation into account
+			use_rot = 0
+
+			# pass all these variables to the network
+			net.set_net_vars(
+			    f=f, inj_params=inj_params,
+			    deriv_symbs_string=deriv_symbs_string,
+			    conv_cos=conv_cos, conv_log=conv_log,
+			    use_rot=use_rot
+			    )
+			
+		############################################################################
+		### GW benchmarking
+		############################################################################
+
+			# compute the WF polarizations
+			net.calc_wf_polarizations()
+			# compute the WF polarizations and their derivatives
+			net.calc_wf_polarizations_derivs_num()
+
+			# setup antenna patterns, location phase factors, and PSDs
+			net.setup_ant_pat_lpf_psds()
+
+			# compute the detector responses
+			net.calc_det_responses()
+			# compute the detector responses and their derivatives
+			net.calc_det_responses_derivs_num()
+
+			# calculate the network and detector SNRs
+			net.calc_snrs()
+
+			# calculate the network and detector Fisher matrices, condition numbers,
+			# covariance matrices, error estimates, and inversion errors
+			net.calc_errors()
+
+			# calculate the 90%-credible sky area (in deg)
+			net.calc_sky_area_90()
+
+		############################################################################
+		### Print results
+		############################################################################
+
+			# print the contents of the detector objects (inside the network)
+			#net.print_detectors()
+
+			# print the contents of the network objects
+			#net.print_network()
+			#print(net.errs)
+			#err_Log_Mc.append(net.errs["log_Mc"])
+			err_H_eff5.append(net.errs["Heff5"])
+			err_H_eff8.append(net.errs["Heff8"])
+			#chi_val.append(chi)
+			
+			#print injection values of masses and spins
+			#chi1,chi2 = inj_params["chi1z"],inj_params["chi2z"]
+			#m1, m2 = brs.m1_m2_of_Mc_eta(Mc,eta)
+			#print("m1 = {}, m2 = {}, chi1 = {}, chi2 = {} ".format(m1, m2, chi1, chi2))
+			
+
+
+
+		if i==0: ##for ET
+			
+			if l==0:  ## M=10
+				axs[0].scatter(chi_val,err_H_eff5,marker='s',color='red')
+				axs[0].plot(chi_val,err_H_eff5,ls='--',color='red')
+				axs[1].scatter(chi_val,err_H_eff8,marker='s',color='red')
+				axs[1].plot(chi_val,err_H_eff8,ls='--',color='red')
+			if l==1:  ## M=40
+				axs[0].scatter(chi_val,err_H_eff5,marker='s',color='green')
+				axs[0].plot(chi_val,err_H_eff5,ls='--',color='green')
+				axs[1].scatter(chi_val,err_H_eff8,marker='s',color='green')
+				axs[1].plot(chi_val,err_H_eff8,ls='--',color='green')
+			if l==2:  ## M=70
+				axs[0].scatter(chi_val,err_H_eff5,marker='s',color='blue')
+				axs[0].plot(chi_val,err_H_eff5,ls='--',color='blue')
+				axs[1].scatter(chi_val,err_H_eff8,marker='s',color='blue')
+				axs[1].plot(chi_val,err_H_eff8,ls='--',color='blue')
+
+		if i==1:  ## for CE
+			if l==0:  ## M=10
+				axs[0].scatter(chi_val,err_H_eff5,marker='^',color='red')
+				axs[0].plot(chi_val,err_H_eff5,ls='--',color='red')
+				axs[1].scatter(chi_val,err_H_eff8,marker='^',color='red')
+				axs[1].plot(chi_val,err_H_eff8,ls='--',color='red')
+			if l==1:  ## M=40
+				axs[0].scatter(chi_val,err_H_eff5,marker='^',color='green')
+				axs[0].plot(chi_val,err_H_eff5,ls='--',color='green')
+				axs[1].scatter(chi_val,err_H_eff8,marker='^',color='green')
+				axs[1].plot(chi_val,err_H_eff8,ls='--',color='green')
+			if l==2:  ## M=70
+				axs[0].scatter(chi_val,err_H_eff5,marker='^',color='blue')
+				axs[0].plot(chi_val,err_H_eff5,ls='--',color='blue')
+				axs[1].scatter(chi_val,err_H_eff8,marker='^',color='blue')
+				axs[1].plot(chi_val,err_H_eff8,ls='--',color='blue')
+	
+red=mpatches.Patch(color='red', label='M={}'.format(int(M[0])))
+green=mpatches.Patch(color='green', label='M={}'.format(int(M[1])))
+blue=mpatches.Patch(color='blue', label='M={}'.format(int(M[2])))
+
+axs[0].set(xlabel='$\\chi_1 = \\chi_2$', ylabel='$\\Delta H_{eff5}$')
+axs[0].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+axs[1].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+axs[1].set(ylim = (0.01,0.2), xlabel='$\\chi_1 = \\chi_2$', ylabel='$\\Delta H_{eff8}$')
+for m in [0,1]:
+	axs[m].grid(color="lightgrey", ls="--")
+	axs[m].set_axisbelow(True)
+	
+for ax in axs.flat:
+    ax.xaxis.label.set_fontsize(12)
+    ax.yaxis.label.set_fontsize(12)
+
+figure.legend(handles=[red,green,blue],loc="upper right")
+figure.tight_layout()
+plt.savefig("/home/samanwaya/gwbench_data/nondeg/new/spin_var.pdf")
+
