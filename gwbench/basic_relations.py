@@ -39,6 +39,44 @@ def f_isco_Msolar(M):
     '''
     return 1./6.**(3./2.)/PI/M
 
+#-------------- ISCO for KBH -------------- (arXiv: 2108.05861)
+
+def r_hat_isco(chi):
+    z1 = 1 + (1 - chi**2)**(1./3.)*((1 + chi)**(1./3.) + (1 - chi)**(1./3.))
+    z2 = np.sqrt(3*chi**2 + z1**2)
+    if chi == 0: return 3 + z2
+    else: return 3 + z2 - (chi/np.abs(chi))*np.sqrt((3 - z1)*(3 + z1 + 2*z2))
+def E_hat_isco(chi):
+    return np.sqrt(1 - (2.)/(3*r_hat_isco(chi)))
+def L_hat_isco(chi):
+    return (2./(3*np.sqrt(3.)))*(1 + 2*np.sqrt(3*r_hat_isco(chi) - 2))
+def f_isco_Msolar_KBH(m1,m2,chi1z,chi2z):
+    k01 = -1.2019
+    k02 = -1.20764
+    k10 = 3.79245
+    k11 = 1.18385
+    k12 = 4.90494
+    zeta = 0.41616
+    k00 = -3.821158961
+    m1 = m1*time_fac
+    m2 = m2*time_fac
+    M = m1 + m2 # initial total mass
+    eta = (m1*m2)/(m1 + m2)**2
+    S_hat = (chi1z*m1**2 + chi2z*m2**2)/(M**2*(1 - 2*eta))
+    Erad_by_M = (0.0559745*eta + 0.580951*eta**2 - 0.960673*eta**3 + 3.35241*eta**4)\
+             *((1 + S_hat*(-0.00303023 - 2.00661*eta + 7.70506*eta**2))/(1 + S_hat*(-0.067144 - 1.47569*eta + 7.30468*eta**2)))
+    M_f = M*(1 - Erad_by_M)  # mass of the final black hole
+    a_tot = (chi1z*m1**2 + chi2z*m2**2)/(m1 + m2)**2
+    a_eff = a_tot + zeta*eta*(chi1z + chi2z)
+    chi_f = a_tot + eta*(L_hat_isco(a_eff) - 2*a_tot*(E_hat_isco(a_eff) - 1))\
+          + (k00 + k01*a_eff + k02*a_eff**2)*eta**2 + (k10 + k11*a_eff + k12*a_eff**2)*eta**3  # final spin of the KBH
+    
+    omega_hat_isco = 1./((r_hat_isco(chi_f))**(3./2.) + chi_f)
+    
+    return omega_hat_isco/(np.pi*M_f)
+
+
+
 #-----mass ratio functions-----
 def eta_of_q(q):
     return q/np.power(1+q,2)
