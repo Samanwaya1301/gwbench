@@ -38,14 +38,14 @@ import matplotlib.patches as mpatches
 err_Log_Mc = []
 
 #input m1, m2 instead of Mc eta and then convert
-M = [10.,30.,60.]
-q = 1.
+M = [60]
+q = 1.5
 
 #Mc,eta = brs.Mc_eta_of_m1_m2(m1,m2)
 #loop for plotting
 figure, axs = plt.subplots(1,2)
 	
-for i in range(0,2):     #  detector loop
+for i in range(0,1):     #  detector loop
 
 	if i==0: network_spec = ['ET_ET1', 'ET_ET2', 'ET_ET3']
 	else: network_spec = ['CE2-40-CBO_C', 'CE2-40-CBO_N', 'CE2-40-CBO_S']
@@ -64,7 +64,7 @@ for i in range(0,2):     #  detector loop
 
 		err_H_eff5 = []
 		err_H_eff8 = []
-		chi_val =[0.1,0.3,0.5,0.7,0.9]
+		chi_val =np.linspace(0,1,5)
 
 		for j in range(len(chi_val)):     #  chi loop
 
@@ -95,7 +95,7 @@ for i in range(0,2):     #  detector loop
 			#eta = inj_params["eta"]
 
 			#M = brs.M_of_Mc_eta(Mc,eta)
-			f_isco = brs.f_isco_Msolar(M[l])
+			f_isco = brs.f_isco_Msolar_KBH(m1,m2,chi_val[j],chi_val[j])
 
 
 			#check the desired frequency range
@@ -105,7 +105,7 @@ for i in range(0,2):     #  detector loop
 
 			#wf_other_var_dic = {'Heff5': 0, 'Heff8': 0}
 			# assign with respect to which parameters to take derivatives
-			deriv_symbs_string = 'Mc Heff5 Heff8'
+			deriv_symbs_string = 'Mc eta DL chi1z chi2z Heff5 Heff8'
 
 			# assign which parameters to convert to cos or log versions
 			conv_cos = ('iota','dec')
@@ -176,9 +176,9 @@ for i in range(0,2):     #  detector loop
 			
 			if l==0:  ## M=10
 				axs[0].scatter(chi_val,err_H_eff5,marker='s',color='red')
-				axs[0].plot(chi_val,err_H_eff5,ls='--',color='red')
+				axs[0].plot(chi_val,err_H_eff5,ls='--',color='red', label='ET')
 				axs[1].scatter(chi_val,err_H_eff8,marker='s',color='red')
-				axs[1].plot(chi_val,err_H_eff8,ls='--',color='red')
+				axs[1].plot(chi_val,err_H_eff8,ls='--',color='red', label='ET')
 			if l==1:  ## M=40
 				axs[0].scatter(chi_val,err_H_eff5,marker='s',color='green')
 				axs[0].plot(chi_val,err_H_eff5,ls='--',color='green')
@@ -192,10 +192,10 @@ for i in range(0,2):     #  detector loop
 
 		if i==1:  ## for CE
 			if l==0:  ## M=10
-				axs[0].scatter(chi_val,err_H_eff5,marker='^',color='red')
-				axs[0].plot(chi_val,err_H_eff5,ls='--',color='red')
-				axs[1].scatter(chi_val,err_H_eff8,marker='^',color='red')
-				axs[1].plot(chi_val,err_H_eff8,ls='--',color='red')
+				axs[0].scatter(chi_val,err_H_eff5,marker='s',color='green')
+				axs[0].plot(chi_val,err_H_eff5,ls='--',color='green', label='CE')
+				axs[1].scatter(chi_val,err_H_eff8,marker='s',color='green')
+				axs[1].plot(chi_val,err_H_eff8,ls='--',color='green', label='CE')
 			if l==1:  ## M=40
 				axs[0].scatter(chi_val,err_H_eff5,marker='^',color='green')
 				axs[0].plot(chi_val,err_H_eff5,ls='--',color='green')
@@ -208,13 +208,13 @@ for i in range(0,2):     #  detector loop
 				axs[1].plot(chi_val,err_H_eff8,ls='--',color='blue')
 	
 red=mpatches.Patch(color='red', label='M={}'.format(int(M[0])))
-green=mpatches.Patch(color='green', label='M={}'.format(int(M[1])))
-blue=mpatches.Patch(color='blue', label='M={}'.format(int(M[2])))
+#green=mpatches.Patch(color='green', label='M={}'.format(int(M[1])))
+#blue=mpatches.Patch(color='blue', label='M={}'.format(int(M[2])))
 
 axs[0].set(xlabel='$\\chi_1 = \\chi_2$', ylabel='$\\Delta H_{eff5}$')
-axs[0].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
-axs[1].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
-axs[1].set(ylim = (0.01,0.2), xlabel='$\\chi_1 = \\chi_2$', ylabel='$\\Delta H_{eff8}$')
+#axs[0].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+#axs[1].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+axs[1].set(xlabel='$\\chi_1 = \\chi_2$', ylabel='$\\Delta H_{eff8}$')
 for m in [0,1]:
 	axs[m].grid(color="lightgrey", ls="--")
 	axs[m].set_axisbelow(True)
@@ -223,7 +223,10 @@ for ax in axs.flat:
     ax.xaxis.label.set_fontsize(12)
     ax.yaxis.label.set_fontsize(12)
 
-figure.legend(handles=[red,green,blue],loc="upper right")
+#figure.legend(handles=[red,green,blue],loc="upper right")
+axs[0].legend()
+axs[1].legend()
 figure.tight_layout()
-plt.savefig("/home/samanwaya/gwbench_data/nondeg/new/spin_var.pdf")
+plt.show()
+#plt.savefig("/home/samanwaya/gwbench_data/nondeg/iscoKBH/incl_eta/spin_var.pdf")
 
