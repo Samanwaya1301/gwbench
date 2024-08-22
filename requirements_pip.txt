@@ -1,0 +1,13 @@
+astropy
+dill
+jax
+jaxlib
+joblib
+lalsuite
+mpmath
+numdifftools
+numpy
+pandas
+pathos
+scipy
+sympy
